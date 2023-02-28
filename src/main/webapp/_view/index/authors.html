@@ -1,0 +1,53 @@
+#include("../common/_layout.html") #define main()
+<div class="site-wrapper">
+	<header class="site-header outer responsive-header-img"
+		style="background-image: url(#(UploadDema)#(UploadPath)/assets/img/bg-1.jpg);height: 50px">
+		<div class="inner">
+			<!-- <div class="site-header-content">
+				<h1 class="site-title">Hello world</h1>
+				<h2 class="site-description">coffee</h2>
+			</div> -->
+			<nav class="site-nav">
+				<div class="site-nav-left">
+					<ul class="nav" style=" margin-top: 10px;font-size: 15px;" role="menu">
+						<li class="nav-home nav-current" role="menuitem">
+						<a href="/" style="color: black;">目录</a>
+						</li>
+						<!-- <li class="nav-contact" role="menuitem"><a href="/directory">DIRECTORY</a>
+						</li> -->
+						<li class="nav-contact" role="menuitem">
+						<a href="/authors" style="color: black;">AUTHORS</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+	</header>
+	<main id="site-main" class="site-main outer">
+		<div class="inner">
+			<div class="post-feed">
+				#for (x : allAuthors)
+				<article class="post-card post tag-node-js tag-promise no-image" style="margin-bottom: 10px">
+					<div class="post-card-content">
+						<a class="post-card-content-link" style="padding-top: 25px;" href="/author/#(x.id)">
+						<div  class="static-avatar" style="float: left; margin-right: 10px;"> 
+							<img class="author-profile-image" src="#(UploadDema)#(x.avatar)">
+						</div>
+						<span> #(x.display) </span>
+						<section class="reading-time">
+							<time class="post-card-excerpt" > #(x.count) 篇博客</time>
+							<!-- <time class="post-full-meta-date" datetime="#date(x.created)">最近编辑时间 #date(x.created)</time> -->
+						</section>
+						</a>
+					</div>
+				</article>
+				#end
+
+
+			</div>
+		</div>
+	</main>
+
+
+</div>
+#end

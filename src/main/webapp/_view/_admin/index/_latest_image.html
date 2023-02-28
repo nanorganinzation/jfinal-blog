@@ -1,0 +1,28 @@
+	<div class="panel-header">
+		附件
+	</div>
+	
+	<div class="image-box" style="padding:20px 10px;">
+		#for ( x : latestImage)
+			<div class="image-item">
+				<div class="post-full-title">
+					#(x.srcImg) #(x.showName)
+				</div>
+			</div>
+		#end
+	</div>
+
+<script>
+	/**
+	 * 点击图片显示大图
+	 */
+	layer.photos({
+		photos: '.image-box',
+		shade: 0.5,
+		// closeBtn: 2,
+		offset: '50px',
+		anim: 5
+	});
+</script>
+
+

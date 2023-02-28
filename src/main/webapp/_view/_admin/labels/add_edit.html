@@ -1,0 +1,52 @@
+### isAdd 表示创建博客
+#set(isAdd = (label == null))
+#include("../common/_header.html", crumb=(isAdd ? "创建分类" : "修改分类"))
+
+<!-- 主界面 -->
+<div id="main" class="main">
+	<div class="form-box">
+		<form id="main-form" action="/admin/labels/#(isAdd ? 'save' : 'update')" method="POST">
+			#if( ! isAdd )
+				<input type="hidden" name="label.id" value="#(label.id)">
+			#end
+			
+			<div class="form-group" style="margin-bottom:28px;">
+				<input autocomplete="off" name="label.title" value="#(label.title ??)" class="form-control form-control-lg" type="text" placeholder="标签">
+			</div>
+			<div class="form-group text-left">
+				<button type="submit" class="btn btn-success">提交</button>
+			</div>
+		
+		</form>
+	</div>
+</div>
+
+<script src="/assets/lib/ckeditor/ckeditor.js"></script>
+<script src="/assets/lib/jquery_form/jquery.form.js"></script>
+
+<script>
+$(function() {
+	// 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
+	$("#main-form").ajaxForm({
+		dataType: 'json', type: 'POST',
+		beforeSerialize: function($form, options) {
+			// 将 ckeditor 中的数据同步到 textarea，否则数据无法提交到服务端
+			for (instance in CKEDITOR.instances) {
+				CKEDITOR.instances[instance].updateElement();
+			}
+			kit.loading({msg: '正在保存, 请稍候 .....'});
+		},
+		success: function(ret) {
+			kit.closeLoading();
+			kit.msg(ret);
+			if (ret.state == "ok") {
+				kit.go('/admin/labels');
+			}
+		}
+	});
+	
+});
+</script>
+
+
+

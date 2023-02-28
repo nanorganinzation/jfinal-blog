@@ -1,0 +1,8 @@
+# db config
+jdbcUrl=jdbc:mysql://47.104.222.156:3306/jfinal_blog?characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull
+user=root
+password=Snn0713!
+
+devMode = true
+engineDevMode = true
+

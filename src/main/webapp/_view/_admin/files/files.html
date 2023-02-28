@@ -1,0 +1,143 @@
+<head>
+    <meta charset="UTF-8">
+    <title>标签页</title>
+    <link rel="stylesheet" href="/assets/lib/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+#include("../common/_header.html", crumb="图片管理")
+<!-- Nav tabs -->
+<ul class="nav nav-pills">
+  <li class="nav-item">
+    <a class="nav-link" href="/admin/file">所有</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/admin/file/img">图片</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="/admin/file/files">附件</a>
+  </li>
+</ul>
+
+<div id="main" class="main">
+	<!-- 工具栏 -->
+	<div class="toolbar">
+		<button open="{area:'420px', offset:'139px'}" url="/admin/file/add" class="btn btn-success btn-sm">
+			<i class="fa fa-upload mr-1"></i>上传
+		</button>
+	</div>
+	<!-- 图片容器 -->
+	<div class="image-box">
+		#for (x : page.getList())
+			<div class="image-item">
+				###
+				<!-- <iframe height="50%" width="50%" type="application/pdf" src=#(UploadDema)#(UploadPath)#(x.path)/#(x.fileName)></iframe>
+				<img src="#(UploadDema)#(UploadPath)#(x.path)/#(x.fileName)"> -->
+				<!-- #(x.srcImg) -->
+				<div class="post-full-title">
+					<div class="image-footer" style="visibility: visible;">
+						#(x.showName) 
+						<i class="fa fa-copy text-info" image-url='#(x.path)/#(x.fileName)' title="复制地址"></i>
+						<i class="fa fa-trash text-danger" confirm='确定删除？' url='/admin/file/delete?id=#(x.id)' title="删除"></i>
+					</div>
+				</div>
+				<!-- <div class="image-footer">
+					<i class="fa fa-copy text-info" image-url='#(x.path)/#(x.fileName)' title="复制地址"></i>
+					<i class="fa fa-trash text-danger" confirm='确定删除？' url='/admin/file/delete?id=#(x.id)' title="删除"></i>
+				</div> -->
+			</div>
+		#end
+	</div>
+	
+	<!-- 分页 -->
+	#@adminPaginate(page.pageNumber, page.totalPage, "/admin/file/files?pn=")
+	<!-- 辅助实现图片 url 复制到剪贴板功能 -->
+	<input id="for-copy" type="text" style="display:none">
+</div>
+
+
+
+<style>
+	.main {
+		padding-left: 45px;
+		padding-right: 45px;
+	}
+	.toolbar {
+		text-align: left;
+		margin-left:10px;
+		margin-bottom:20px;
+	}
+</style>
+<script src="/assets/lib/jquery_form/jquery.form.js"></script>
+ <script src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
+<script>
+	
+	$(function() {
+		// 复制图片 url 到剪贴板
+		$('.image-footer i[image-url]').on('click', copyImageUrl);
+		
+		// 删除图片
+		kit.bindConfirm('.image-box', 'i[confirm]', {shadeClose:true},
+			function(ret, $this, index) {
+				layer.close(index);
+				kit.msg(ret);
+				if (ret.state == 'ok') {
+					kit.fill('/admin/file', null, '#content-box');
+				}
+			}
+		);
+		//初始化查询博客类型
+		/*  */
+	});
+	/**
+	 * 使用 jquery form 插件，接管表单提交事件，并将表单提交自动转化成 ajax 提交
+	 */
+	$("nav-profile-tab").ajaxForm({
+		dataType: 'json', type: 'POST',
+		beforeSerialize: function($form, options) {
+			kit.loading({msg: '正在上传图片, 请稍候 .....'});
+		},
+		success: function(ret) {
+			kit.closeLoading();
+			
+			// 上传成功格式：{"uploaded":1, "fileName":"xxx.jpg", "url":"/path/xxx.jpg"}
+			// 上传失败格式：{"uploaded":0, "fileName":"foo.jpg", "error":{"message":"文件格式不正确"}}
+			if (ret.uploaded != 0) {
+				layer.closeAll();
+				kit.fill('/admin/file', null, '#content-box');
+				kit.ok('上传成功');
+			} else {
+				kit.fail('上传失败: ' + ret.error.message);
+			}
+		}
+	});
+	
+	/**
+	 * 复制图片 url 到剪贴板
+	 */
+	function copyImageUrl() {
+		var imageUrl = $(this).attr('image-url');
+		var temp = $('#for-copy');
+		temp.val(imageUrl).show();
+		try {
+			temp.select();
+			document.execCommand('copy');
+			temp.hide();
+			kit.ok('图片地址已复制到剪贴板');
+		} catch (error) {
+			temp.hide();
+			kit.fail('操作失败，浏览器不支持复制');
+		}
+	}
+	
+	/**
+	 * 点击图片显示大图
+	 */
+	layer.photos({
+		photos: '.image-box',
+		shade: 0.5,
+		// closeBtn: 2,
+		offset: '50px',
+		anim: 5
+	});
+	
+</script>

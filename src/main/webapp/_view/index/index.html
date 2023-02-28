@@ -1,0 +1,62 @@
+#include("../common/_layout.html") #define main()
+<div class="site-wrapper">
+	<header class="site-header outer responsive-header-img"
+		style="background-image: url(#(UploadDema)#(UploadPath)/assets/img/bg-1.jpg);height: 50px">
+		<div class="inner">
+			<!-- <div class="site-header-content">
+				<h1 class="site-title">Hello world</h1>
+				<h2 class="site-description">coffee</h2>
+			</div> -->
+			<nav class="site-nav">
+				<div class="site-nav-left">
+					<ul class="nav" style=" margin-top: 10px;font-size: 15px;" role="menu">
+						<li class="nav-home nav-current" role="menuitem">
+						<a href="/" style="color: black;">目录</a>
+						</li>
+						<!-- <li class="nav-contact" role="menuitem"><a href="/directory">DIRECTORY</a>
+						</li> -->
+						<li class="nav-contact" role="menuitem">
+						<a href="/authors" style="color: black;">AUTHORS</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+	</header>
+	<main id="site-main" class="site-main outer">
+		<div class="inner">
+			<div class="post-feed">
+				#for (x : allBlogs)
+				<article class="post-card post tag-node-js tag-promise no-image">
+					<div class="post-card-content">
+						<a class="post-card-content-link" href="/blog/#(x.id)">
+						 <header class="post-card-header">
+								### <span class="post-card-tags"></span>
+								<h2 class="post-card-excerpt">#(x.title)</h2>
+						</header>
+						<!-- <section class="post-card-excerpt">
+								<p>#(x.brief)</p>
+						</section> -->
+						</a>
+						<!-- <footer class="post-card-meta">
+							<ul class="author-list">
+								<li class="author-list-item">
+									<a href="" class="static-avatar" target="_blank"> 
+										<img class="author-profile-image" src=#(UploadDema)#(x.avatar) alt="jfinal" />
+									</a>
+								</li>
+							</ul>
+								<section class="reading-time">
+								<time class="post-full-meta-date" datetime="#date(x.created)">#date(x.created)</time>
+							</section>
+					</footer> -->
+					</div>
+				</article>
+				#end
+
+
+			</div>
+		</div>
+	</main>
+</div>
+#end
